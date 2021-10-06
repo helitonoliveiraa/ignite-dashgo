@@ -15,6 +15,7 @@
     "@hookform/resolvers": "^2.8.1",
     "add": "^2.0.6",
     "apexcharts": "^3.28.3",
+    "axios": "^0.22.0",
     "framer-motion": "^4",
     "next": "11.1.2",
     "react": "17.0.2",
