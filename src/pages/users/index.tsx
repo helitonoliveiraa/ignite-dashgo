@@ -23,28 +23,11 @@ import { useQuery } from 'react-query';
 import { Header } from '../../components/Header';
 import { Pagination } from '../../components/Pagination';
 import { Sidebar } from '../../components/Sidebar';
+import { api } from '../../services/api';
+import { useUsers } from '../../services/hooks/useUsers';
 
 export default function UserList() {
-  const { data, isLoading, isError, isFetching } = useQuery('users', async () => {
-    const response = await fetch('http://localhost:3000/api/users')
-    const data = await response.json();
-
-    const users = data.users.map(user => {
-      return {
-        ...user,
-        createdAt: new Date(user.createdAt)
-          .toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric',
-          }),
-      }
-    })
-
-    return users;
-  }, {
-    staleTime: 1000 * 5, // 5 milliseconds
-  })
+  const { data, isLoading, isError, isFetching } = useUsers();
   
   console.log(data);
 
