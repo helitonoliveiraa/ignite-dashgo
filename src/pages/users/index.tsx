@@ -16,6 +16,7 @@ import {
   Spinner,
   Link
 } from '@chakra-ui/react';
+import { GetServerSideProps } from 'next';
 import NextLink from 'next/link';
 import { useEffect, useState } from 'react';
 import { RiAddLine, RiPencilLine } from 'react-icons/ri';
@@ -25,12 +26,29 @@ import { Header } from '../../components/Header';
 import { Pagination } from '../../components/Pagination';
 import { Sidebar } from '../../components/Sidebar';
 import { api } from '../../services/api';
-import { useUsers } from '../../services/hooks/useUsers';
+import { getUsers, useUsers } from '../../services/hooks/useUsers';
 import { queryClient } from '../../services/queryClient';
 
-export default function UserList() {
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+};
+
+type UserListProps = {
+  users: User[];
+  totalCount: string;
+};
+
+export default function UserList({ users }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, isLoading, isError, isFetching } = useUsers(currentPage);
+  // const { data, isLoading, isError, isFetching } = useUsers(currentPage);
+
+  // EXAMPLE USING SSG
+  const { data, isLoading, isError, isFetching } = useUsers(currentPage, {
+    initialData: users
+  });
   
   console.log(currentPage);
 
@@ -149,4 +167,17 @@ export default function UserList() {
       </Flex>
     </Box>
   );
+}
+
+// EXAMPLE USING SSR
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const { users, totalCount } = await getUsers(1);
+  
+  return {
+    props: {
+      users,
+      totalCount,
+    }
+  }
 }
