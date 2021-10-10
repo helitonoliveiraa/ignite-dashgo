@@ -16,7 +16,7 @@ import {
   Spinner
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { RiAddLine, RiPencilLine } from 'react-icons/ri';
 import { useQuery } from 'react-query';
 
@@ -27,9 +27,10 @@ import { api } from '../../services/api';
 import { useUsers } from '../../services/hooks/useUsers';
 
 export default function UserList() {
-  const { data, isLoading, isError, isFetching } = useUsers();
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading, isError, isFetching } = useUsers(currentPage);
   
-  console.log(data);
+  console.log(currentPage);
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -86,7 +87,7 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data.map(user => (
+                  {data.users.map(user => (
                     <Tr key={user.id}>
                       <Td px={["4", "4", "6"]} >
                         <Checkbox colorScheme="pink" />
@@ -119,9 +120,9 @@ export default function UserList() {
               </Table>
 
               <Pagination 
-                totalCounOfRegisters={200}
-                currentPage={5}
-                onPageChange={() => {}}
+                totalCounOfRegisters={data.totalCount}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
               />
             </>
           )}
