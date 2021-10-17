@@ -18,9 +18,8 @@ import {
 } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import NextLink from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RiAddLine, RiPencilLine } from 'react-icons/ri';
-import { useQuery } from 'react-query';
 
 import { Header } from '../../components/Header';
 import { Pagination } from '../../components/Pagination';
@@ -41,14 +40,14 @@ type UserListProps = {
   totalCount: string;
 };
 
-export default function UserList({ users }) {
+export default function UserList() {
   const [currentPage, setCurrentPage] = useState(1);
-  // const { data, isLoading, isError, isFetching } = useUsers(currentPage);
+  const { data, isLoading, isError, isFetching } = useUsers(currentPage);
 
   // EXAMPLE USING SSG
-  const { data, isLoading, isError, isFetching } = useUsers(currentPage, {
-    initialData: users
-  });
+  // const { data, isLoading, isError, isFetching } = useUsers(currentPage, {
+  //   initialData: users
+  // });
   
   console.log(currentPage);
 
@@ -157,7 +156,7 @@ export default function UserList({ users }) {
               </Table>
 
               <Pagination 
-                totalCounOfRegisters={data.totalCount}
+                totalCountOfRegisters={data.totalCount}
                 currentPage={currentPage}
                 onPageChange={setCurrentPage}
               />
@@ -171,13 +170,13 @@ export default function UserList({ users }) {
 
 // EXAMPLE USING SSR
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const { users, totalCount } = await getUsers(1);
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const { users, totalCount } = await getUsers(1);
   
-  return {
-    props: {
-      users,
-      totalCount,
-    }
-  }
-}
+//   return {
+//     props: {
+//       users,
+//       totalCount,
+//     }
+//   }
+// }

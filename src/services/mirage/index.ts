@@ -5,7 +5,7 @@ import {
   Response, 
   ActiveModelSerializer 
 } from 'miragejs';
-import faker, { fake } from 'faker';
+import faker from 'faker';
 
 type User = {
   name: string;
